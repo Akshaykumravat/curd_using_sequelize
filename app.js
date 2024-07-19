@@ -17,3 +17,5 @@ sequelize.sync().then(() => {
     connect();
   });
 });
+
+//sync is not suggested in production
