@@ -1,6 +1,5 @@
 const prisma = require("../db_connection/db.config");
 
-
 const createPost = async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -31,10 +30,22 @@ const createPost = async (req, res) => {
 
 const getAllPost = async (req, res) => {
   try {
-    const posts = await Post.findAll();
-    res.json({
+    const { id } = req.params;
+    const Users = await prisma.user.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    if (!Users) {
+      return res.json({
+        success: false,
+        data: null,
+        message: "user not found",
+      });
+    }
+    return res.json({
       success: true,
-      data: posts,
+      data: Users,
       message: "data retrive successfully",
     });
   } catch (error) {

@@ -6,6 +6,6 @@ router.route("/posts").post(createPost);
 
 
 //Route to get all post
-router.route("/posts").get(getAllPost)
+router.route("/posts/:id").get(getAllPost)
 
 module.exports = router;
