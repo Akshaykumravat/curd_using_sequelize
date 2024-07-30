@@ -1,6 +1,6 @@
 const prisma = require("../db_connection/db.config");
 
-const createPost = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const { name, email } = req.body;
     const finduser = await prisma.user.findUnique({
@@ -28,7 +28,8 @@ const createPost = async (req, res) => {
   }
 };
 
-const getAllPost = async (req, res) => {
+//
+const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const Users = await prisma.user.findUnique({
@@ -53,4 +54,30 @@ const getAllPost = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch posts" });
   }
 };
-module.exports = { createPost, getAllPost };
+
+const getAllUser = async (req, res) => {
+  try {
+    const users = await prisma.user.findMany();
+    if (!users || users.length === 0) {
+      return res.status(404).json({
+        status: "fail",
+        data: null,
+        message: "No users found",
+      });
+    }
+    return res.status(200).json({
+      status: "success",
+      data: users,
+      message: "Users retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error fetching users: ", error);
+    return res.status(500).json({
+      status: "error",
+      message: "An error occurred while retrieving users",
+    });
+  }
+};
+
+
+module.exports = { createUser,getAllUser,getUserById };
